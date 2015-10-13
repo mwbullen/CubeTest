@@ -5,6 +5,8 @@ public class CubeMovement : MonoBehaviour {
 	Vector3 rotateAxisVector;
 	Vector3 rotateAroundAxisVector;
 
+	Quaternion targetRotationQ;
+
 	float rotateDegree;
 	float rotateDegreeCounter;
 
@@ -15,11 +17,22 @@ public class CubeMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if ( rotateDegreeCounter > 0) {
+		Debug.Log (rotateDegreeCounter);
+		if (rotateDegreeCounter > 1) {
+			if (targetRotationQ != null && transform.rotation != targetRotationQ) {
+				//float degChange = rotateDegree * Time.deltaTime;
+				float degChange = rotateDegree * Time.deltaTime;
 
-			transform.RotateAround (rotateAxisVector, rotateAroundAxisVector, rotateDegree * Time.deltaTime);
-			rotateDegreeCounter -= Mathf.Abs( (rotateDegree * Time.deltaTime));
+				transform.RotateAround (rotateAxisVector, rotateAroundAxisVector, degChange);
+				rotateDegreeCounter -= Mathf.Abs ((degChange));
+			} 
 		}
+		else  {
+			transform.rotation = targetRotationQ;
+			targetRotationQ = transform.rotation;
+			rotateDegreeCounter = 0;
+		}
+
 	}
 
 
@@ -29,6 +42,11 @@ public class CubeMovement : MonoBehaviour {
 			rotateAxisVector = transform.position + new Vector3 (.5f, -.5f, .5f);
 			rotateDegree = -90f;
 			rotateDegreeCounter = Mathf.Abs (rotateDegree);	
+
+			Vector3 currentRotation = transform.rotation.eulerAngles;
+			Vector3 targetRotation = currentRotation + (rotateDegree * rotateAroundAxisVector);
+
+			targetRotationQ = Quaternion.Euler(targetRotation);
 		}
 	}
 
@@ -38,6 +56,11 @@ public class CubeMovement : MonoBehaviour {
 			rotateAxisVector = transform.position + new Vector3 (-.5f, -.5f, .5f);
 			rotateDegree = 90f;
 			rotateDegreeCounter = Mathf.Abs (rotateDegree);	
+
+			Vector3 currentRotation = transform.rotation.eulerAngles;
+			Vector3 targetRotation = currentRotation + (rotateDegree * rotateAroundAxisVector);
+			
+			targetRotationQ = Quaternion.Euler(targetRotation);
 		}
 	}
 
@@ -47,6 +70,12 @@ public class CubeMovement : MonoBehaviour {
 			rotateAxisVector = transform.position + new Vector3 (0f, -.5f, .5f);
 			rotateDegree = 90f;
 			rotateDegreeCounter = Mathf.Abs (rotateDegree);	
+
+			
+			Vector3 currentRotation = transform.rotation.eulerAngles;
+			Vector3 targetRotation = currentRotation + (rotateDegree * rotateAroundAxisVector);
+			
+			targetRotationQ = Quaternion.Euler(targetRotation);
 		}
 	}
 
@@ -56,6 +85,12 @@ public class CubeMovement : MonoBehaviour {
 			rotateAxisVector = transform.position + new Vector3 (0f, -.5f, -.5f);
 			rotateDegree = -90f;
 			rotateDegreeCounter = Mathf.Abs (rotateDegree);	
+
+			
+			Vector3 currentRotation = transform.rotation.eulerAngles;
+			Vector3 targetRotation = currentRotation + (rotateDegree * rotateAroundAxisVector);
+			
+			targetRotationQ = Quaternion.Euler(targetRotation);
 		}
 	}
 
